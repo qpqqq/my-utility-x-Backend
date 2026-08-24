@@ -8,6 +8,7 @@ import (
 
 func RegisterRoutes() *gin.Engine {
 	server := gin.Default()
+	server.MaxMultipartMemory = 32 << 20 // 32 MiB
 	server.Use(middlewares.CORSMiddleware())
 	authenticated := server.Group("/")
 	authenticated.Use(middlewares.Authenticate)
@@ -41,6 +42,6 @@ func RegisterRoutes() *gin.Engine {
 	server.GET("/get-file/:fileId", getFile)
 	authenticated.POST("/upload-file", uploadFile)
 	authenticated.GET("/files", getFiles)
-	authenticated.DELETE("/file/:id", deletFile)
+	authenticated.DELETE("/file/:fileId", deleteFile)
 	return server
 }

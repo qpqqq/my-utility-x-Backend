@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/base64"
+	"log"
 	"net/http"
 	"strings"
 
@@ -43,12 +44,10 @@ func CloseGRPCConnection() {
 }
 
 func uploadFile(ctx *gin.Context) {
-
 	userId, exist := ctx.Get("userId")
-	fileRepo := repository.NewFileRepository()
-
 	if !exist {
-		ctx.JSON(401, errors.ErrUnAuthorized)
+		ctx.JSON(http.StatusUnauthorized, errors.ErrUnAuthorized)
+		return
 	}
 
 	var requestBody struct {
@@ -56,6 +55,7 @@ func uploadFile(ctx *gin.Context) {
 		Filedata string `json:"filedata"`
 	}
 	if err := ctx.ShouldBindJSON(&requestBody); err != nil {
+		log.Printf("Error binding JSON: %v", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
 		return
 	}
@@ -63,6 +63,7 @@ func uploadFile(ctx *gin.Context) {
 	// Extract the base64 data from the filedata string
 	parts := strings.SplitN(requestBody.Filedata, ",", 2)
 	if len(parts) != 2 {
+		log.Printf("Invalid file data format")
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid file data format"})
 		return
 	}
@@ -75,19 +76,24 @@ func uploadFile(ctx *gin.Context) {
 
 	client := grpc.Connect()
 	response, err := client.UploadFile(ctx, req)
-
 	if err != nil {
+		log.Printf("gRPC UploadFile error: %v", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload file: " + err.Error()})
 		return
 	}
 
+	fileRepo := repository.NewFileRepository()
 	file := models.File{
 		FileName: req.Filename,
 		FileId:   response.FileId,
 		UserId:   userId.(primitive.ObjectID),
 	}
 
-	fileRepo.AddFile(ctx, file)
+	if err := fileRepo.AddFile(ctx, file); err != nil {
+		log.Printf("Error adding file to database: %v", err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save file information"})
+		return
+	}
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "File uploaded successfully"})
 }
@@ -110,23 +116,29 @@ func getFiles(ctx *gin.Context) {
 	}
 }
 
-func deletFile(ctx *gin.Context) {
+func deleteFile(ctx *gin.Context) {
 	userId, exist := ctx.Get("userId")
-	id := ctx.Param("id")
+	fileId := ctx.Param("fileId")
 	fileRepo := repository.NewFileRepository()
 
 	if !exist {
 		ctx.JSON(401, errors.ErrUnAuthorized)
+		return
 	}
 
 	if userId, ok := userId.(primitive.ObjectID); ok {
+		fileRepo.DeleteFile(ctx, fileId, userId)
+	}
 
-		objID, err := primitive.ObjectIDFromHex(id)
-		if err != nil {
-			panic(err)
-		}
-		fileRepo.DeleteFile(ctx, objID, userId)
+	req := &grpc.DeleteFileRequest{
+		FileId: fileId,
+	}
 
+	client := grpc.Connect()
+	res, err := client.DeleteFile(ctx, req)
+	if err != nil || !res.Ok {
+		ctx.JSON(400, errors.ErrSomethingWentWrong)
+		return
 	}
 
 }

@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"strings"
+	"path/filepath"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,9 +14,9 @@ import (
 
 type FilesRepository interface {
 	AddFile(ctx context.Context, f models.File) error
-	DeleteFile(ctx context.Context, f models.File) error
+	DeleteFile(ctx context.Context, fileId string, userId primitive.ObjectID) error
 	GetFile(ctx context.Context, f models.File) (*models.File, error)
-	GetAll(ctx context.Context, f models.File,userId primitive.ObjectID) ([]*models.File, error)
+	GetAll(ctx context.Context, f models.File, userId primitive.ObjectID) ([]*models.File, error)
 }
 
 type MongoFilesRepo struct {
@@ -35,7 +35,10 @@ func (fr *MongoFilesRepo) AddFile(ctx context.Context, f models.File) error {
 
 	f.Id = primitive.NewObjectID()
 	f.CreatedAt = time.Now()
-	f.ContentType = strings.Split(f.FileName, ".")[1]
+	f.ContentType = filepath.Ext(f.FileName)
+	if f.ContentType != "" {
+		f.ContentType = f.ContentType[1:] // Remove the leading dot
+	}
 	_, err := fr.db.InsertOne(ctx, f)
 
 	if err != nil {
@@ -70,7 +73,7 @@ func (fr *MongoFilesRepo) GetAll(ctx context.Context, userId primitive.ObjectID)
 	return result, nil
 }
 
-func (fr *MongoFilesRepo) DeleteFile(ctx context.Context, id primitive.ObjectID,userId primitive.ObjectID) error {
-  _, err := fr.db.DeleteOne(ctx, bson.M{"_id": id,"userId":userId})
+func (fr *MongoFilesRepo) DeleteFile(ctx context.Context, fileId string, userId primitive.ObjectID) error {
+	_, err := fr.db.DeleteOne(ctx, bson.M{"fileId": fileId, "userId": userId})
 	return err
 }

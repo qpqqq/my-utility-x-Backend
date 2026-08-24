@@ -16,6 +16,7 @@ func Init() (*mongo.Client, context.Context, error) {
 	fmt.Print(os.Getenv("MONGO_URL"))
 	opts := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
 	client, err := mongo.Connect(ctx, opts)
 
 	if err != nil {
@@ -29,13 +30,12 @@ func Init() (*mongo.Client, context.Context, error) {
 	return client, ctx, err
 }
 
-
-
 func InitNew() (*mongo.Database, context.Context, error) {
 
 	fmt.Print(os.Getenv("MONGO_URL"))
 	opts := options.Client().ApplyURI(os.Getenv("MONGO_URL"))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		log.Printf("Failed to connect to MongoDB: %v", err)
@@ -46,4 +46,4 @@ func InitNew() (*mongo.Database, context.Context, error) {
 		return nil, nil, err
 	}
 	return client.Database("myutilityx"), ctx, err
-  }
+}

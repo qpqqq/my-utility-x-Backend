@@ -2,10 +2,12 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -17,15 +19,59 @@ const (
 	RoleModerator Role = "MODERATOR"
 )
 
-func GenerateToken(email, username string, userId primitive.ObjectID, addedTime time.Duration, role Role) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username,
-		"email":    email,
-		"userId":   userId,
-		"role":     role,
-		"exp":      time.Now().Add(addedTime).Unix(),
-	})
-	return token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
+type TokenDetails struct {
+	AccessToken  string
+	RefreshToken string
+	AccessUUID   string
+	RefreshUUID  string
+	AtExpires    int64
+	RtExpires    int64
+	Role         Role
+}
+
+func GenerateToken(email, username string, userId primitive.ObjectID, addedTime time.Duration, role Role) (*TokenDetails, error) {
+
+	td := &TokenDetails{}
+	td.AtExpires = time.Now().Add(addedTime).Unix()
+	td.AccessUUID = uuid.New().String()
+	td.RtExpires = time.Now().Add(time.Hour * 24 * 30).Unix()
+	td.RefreshUUID = uuid.New().String()
+	td.Role = role
+
+	// JWT secret
+	jwtSecret := os.Getenv("JWT_SECRET_KEY")
+	if jwtSecret == "" {
+		return nil, fmt.Errorf("JWT_SECRET_KEY environment variable is not set")
+	}
+
+	// Create Access Token
+	atClaims := jwt.MapClaims{}
+	atClaims["authorized"] = true // Fixing the typo here
+	atClaims["access_uuid"] = td.AccessUUID
+	atClaims["user_id"] = userId.Hex() // Convert ObjectID to string
+	atClaims["exp"] = td.AtExpires
+	atClaims["role"] = td.Role
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
+	accessToken, err := at.SignedString([]byte(jwtSecret))
+	if err != nil {
+		return nil, err
+	}
+	td.AccessToken = accessToken
+	fmt.Print("THIS IS ----->", accessToken)
+
+	// Create Refresh Token
+	rtClaims := jwt.MapClaims{}
+	rtClaims["refresh_uuid"] = td.RefreshUUID
+	rtClaims["user_id"] = userId.Hex() // Convert ObjectID to string
+	rtClaims["exp"] = td.RtExpires
+	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
+	refreshToken, err := rt.SignedString([]byte(jwtSecret)) // Convert secret to []byte
+	if err != nil {
+		return nil, err
+	}
+	td.RefreshToken = refreshToken
+
+	return td, nil
 }
 
 func VerifyToken(token string) (primitive.ObjectID, Role, error) {
@@ -53,7 +99,7 @@ func VerifyToken(token string) (primitive.ObjectID, Role, error) {
 		return primitive.ObjectID{}, "", errors.New("invalid token claims")
 	}
 
-	userIdStr, ok := claims["userId"].(string)
+	userIdStr, ok := claims["user_id"].(string)
 
 	if !ok {
 		return primitive.ObjectID{}, "", errors.New("userId claim could not be parsed")
@@ -69,4 +115,33 @@ func VerifyToken(token string) (primitive.ObjectID, Role, error) {
 	}
 
 	return userId, Role(role), nil
+}
+
+func VerifyRefreshToken(refreshTokenString string) (string, error) {
+	token, err := jwt.Parse(refreshTokenString, func(token *jwt.Token) (interface{}, error) {
+		// Validate the algorithm
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return os.Getenv("JWT_SECRET_KEY"), nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	// Extract token claims
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		refreshUUID, ok := claims["refresh_uuid"].(string)
+		if !ok {
+			return "", fmt.Errorf("refresh UUID not found")
+		}
+		// Check if token is expired
+		if int64(claims["exp"].(float64)) < time.Now().Unix() {
+			return "", fmt.Errorf("refresh token expired")
+		}
+		return refreshUUID, nil
+	}
+
+	return "", fmt.Errorf("invalid token")
 }

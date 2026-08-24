@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.1
-// source: gRPC/telegram_as_storage.proto
+// source: gRpc/telegram_as_storage.proto
 
 package grpc
 
@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Storage_UploadFile_FullMethodName = "/storage.Storage/UploadFile"
 	Storage_GetFile_FullMethodName    = "/storage.Storage/GetFile"
+	Storage_DeleteFile_FullMethodName = "/storage.Storage/DeleteFile"
 )
 
 // StorageClient is the client API for Storage service.
@@ -29,6 +30,7 @@ const (
 type StorageClient interface {
 	UploadFile(ctx context.Context, in *UploadFileRequest, opts ...grpc.CallOption) (*UploadFileResponse, error)
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
+	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error)
 }
 
 type storageClient struct {
@@ -59,12 +61,23 @@ func (c *storageClient) GetFile(ctx context.Context, in *GetFileRequest, opts ..
 	return out, nil
 }
 
+func (c *storageClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteFileResponse)
+	err := c.cc.Invoke(ctx, Storage_DeleteFile_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // StorageServer is the server API for Storage service.
 // All implementations must embed UnimplementedStorageServer
 // for forward compatibility.
 type StorageServer interface {
 	UploadFile(context.Context, *UploadFileRequest) (*UploadFileResponse, error)
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
+	DeleteFile(context.Context, *DeleteFileRequest) (*DeleteFileResponse, error)
 	mustEmbedUnimplementedStorageServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedStorageServer) UploadFile(context.Context, *UploadFileRequest
 }
 func (UnimplementedStorageServer) GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFile not implemented")
+}
+func (UnimplementedStorageServer) DeleteFile(context.Context, *DeleteFileRequest) (*DeleteFileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFile not implemented")
 }
 func (UnimplementedStorageServer) mustEmbedUnimplementedStorageServer() {}
 func (UnimplementedStorageServer) testEmbeddedByValue()                 {}
@@ -138,6 +154,24 @@ func _Storage_GetFile_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Storage_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).DeleteFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Storage_DeleteFile_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).DeleteFile(ctx, req.(*DeleteFileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Storage_ServiceDesc is the grpc.ServiceDesc for Storage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -153,7 +187,11 @@ var Storage_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetFile",
 			Handler:    _Storage_GetFile_Handler,
 		},
+		{
+			MethodName: "DeleteFile",
+			Handler:    _Storage_DeleteFile_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "gRPC/telegram_as_storage.proto",
+	Metadata: "gRpc/telegram_as_storage.proto",
 }

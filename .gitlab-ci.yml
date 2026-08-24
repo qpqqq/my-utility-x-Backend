@@ -45,7 +45,7 @@ deploy:
     - ssh $USER@$IP_ADDRESS "docker pull $CI_REGISTRY_IMAGE"
     - ssh $USER@$IP_ADDRESS "docker stop mux-backend || true && docker rm mux-backend || true"
     - ssh $USER@$IP_ADDRESS "docker network create my-network || true"
-    - ssh $USER@$IP_ADDRESS "docker run -d --name mux-backend --network my-network -p 8080:8080 -e MONGO_URL=\"$MONGO_URL\" -e MONGO_DB_NAME=\"$MONGO_DB_NAME\" -e SENDGRID_API_KEY=\"$SENDGRID_API_KEY\" -e API_URL=\"$API_URL\" -e UI_URL=\"$UI_URL\" $CI_REGISTRY_IMAGE"
+    - ssh $USER@$IP_ADDRESS "docker run -d --name mux-backend --network my-network -p 8080:8080 -e MONGO_URL=\"$MONGO_URL\" -e MONGO_DB_NAME=\"$MONGO_DB_NAME\" -e SENDGRID_API_KEY=\"$SENDGRID_API_KEY\" -e API_URL=\"$API_URL\" -e UI_URL=\"$UI_URL\" -e JWT_SECRET_KEY=\"$JWT_SECRET_KEY\" $CI_REGISTRY_IMAGE"
   artifacts:
     paths:
       - myutilityx.com

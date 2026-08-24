@@ -6,7 +6,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"myutilityx.com/db"
 	"myutilityx.com/utils"
 )
@@ -44,17 +43,9 @@ func (u *User) Save() error {
 	return err
 }
 
-func (u *User) ValidateCredintials() error {
-	database, ctx, err := db.Init()
+func (u *User) ValidateCredintials(enteredPass string) error {
 
-	if err != nil {
-		return err
-	}
-
-	filter := bson.M{"email": u.Email}
-	projection := bson.M{"password": 1}
-
-	err = u.FindByEmail()
+	err := u.FindByEmail()
 
 	if err != nil {
 		return err
@@ -64,19 +55,8 @@ func (u *User) ValidateCredintials() error {
 		return errors.New("please verify your email first")
 	}
 
-	var result struct {
-		ID       primitive.ObjectID `bson:"_id"`
-		Password string
-	}
+	isValid := utils.CheckPasswordHash(enteredPass, u.Password)
 
-	err = database.Database(os.Getenv("MONGO_DB_NAME")).Collection("users").FindOne(ctx, filter, options.FindOne().SetProjection(projection)).Decode(&result)
-
-	if err != nil {
-		return err
-	}
-
-	isValid := utils.CheckPasswordHash(u.Password, result.Password)
-	u.ID = result.ID
 	if !isValid {
 		return errors.New("invalid creditionals")
 	}
@@ -99,19 +79,18 @@ func (u User) Update(field bson.M) error {
 
 func (u *User) FindByEmail() error {
 	database, ctx, err := db.Init()
-
-	var result User
-	filter := bson.M{"email": u.Email}
-
 	if err != nil {
 		return err
 	}
 
-	err = database.Database(os.Getenv("MONGO_DB_NAME")).Collection("users").FindOne(ctx, filter).Decode(&result)
-	u.İsVerified = result.İsVerified
-	// u.Username = result.Username
-	// u.Role = result.Role
-	return err
+	filter := bson.M{"email": u.Email}
+
+	err = database.Database(os.Getenv("MONGO_DB_NAME")).Collection("users").FindOne(ctx, filter).Decode(u)
+	
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *User) FindById() error {

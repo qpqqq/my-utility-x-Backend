@@ -43,7 +43,7 @@ func register(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, errors.ErrSomethingWentWrong)
 		return
 	}
-	_, err = mailS.SendSimpleMessage(os.Getenv("API_URL")+"user/verify?token="+token, user.Email, user.Username, "d-958c75cdb588424fb80e49688fb2c3da")
+	_, err = mailS.SendSimpleMessage(os.Getenv("API_URL")+"user/verify?token="+token.AccessToken, user.Email, user.Username, "d-958c75cdb588424fb80e49688fb2c3da")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errors.ErrSendingVerificationEmail)
 		return
@@ -60,19 +60,19 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	err = user.ValidateCredintials()
+	err = user.ValidateCredintials(user.Password)
 
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, err.Error())
 		return
 	}
-
-	token, err := utils.GenerateToken(user.Email, user.Username, user.ID, time.Hour*2, utils.Role(user.Role))
+	td, err := utils.GenerateToken(user.Email, user.Username, user.ID, time.Hour*2, utils.Role(user.Role))
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errors.ErrGeneratingToken)
+		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"user": user, "token": token})
+	ctx.JSON(http.StatusOK, gin.H{"user": user, "token": td.AccessToken, "refreshToken": td.RefreshToken})
 }
 
 func verifyEmail(ctx *gin.Context) {
@@ -128,7 +128,7 @@ func resetPassword(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "something went wrong (732)!"})
 		return
 	}
-	_, err = mailS.SendSimpleMessage("https://mux04.com/auth/reset-password/confirm/"+token, user.Email, user.Username, "d-325e3a95b2fb497d9c293519596f6a45")
+	_, err = mailS.SendSimpleMessage("https://mux04.com/auth/reset-password/confirm/"+token.AccessToken, user.Email, user.Username, "d-325e3a95b2fb497d9c293519596f6a45")
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errors.ErrSendingResetPasswordEmail)

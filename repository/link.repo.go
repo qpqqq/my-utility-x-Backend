@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -44,7 +43,7 @@ func (d *database) FindAll() ([]*model.Link, error) {
 		var l *model.Link
 		err = cursor.Decode(&l)
 		if err != nil {
-			log.Fatal("faield to decode " + err.Error())
+			return nil, err
 		}
 		result = append(result, l)
 	}
@@ -67,4 +66,3 @@ func (d *database) FindAllByUserID(userId primitive.ObjectID) ([]*model.Link, er
 	}
 	return links, nil
 }
-

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.34.2
 // 	protoc        v5.28.1
-// source: gRPC/telegram_as_storage.proto
+// source: gRpc/telegram_as_storage.proto
 
 package grpc
 
@@ -32,7 +32,7 @@ type UploadFileRequest struct {
 func (x *UploadFileRequest) Reset() {
 	*x = UploadFileRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_gRPC_telegram_as_storage_proto_msgTypes[0]
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +45,7 @@ func (x *UploadFileRequest) String() string {
 func (*UploadFileRequest) ProtoMessage() {}
 
 func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gRPC_telegram_as_storage_proto_msgTypes[0]
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *UploadFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadFileRequest.ProtoReflect.Descriptor instead.
 func (*UploadFileRequest) Descriptor() ([]byte, []int) {
-	return file_gRPC_telegram_as_storage_proto_rawDescGZIP(), []int{0}
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UploadFileRequest) GetFilename() string {
@@ -86,7 +86,7 @@ type UploadFileResponse struct {
 func (x *UploadFileResponse) Reset() {
 	*x = UploadFileResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_gRPC_telegram_as_storage_proto_msgTypes[1]
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -99,7 +99,7 @@ func (x *UploadFileResponse) String() string {
 func (*UploadFileResponse) ProtoMessage() {}
 
 func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gRPC_telegram_as_storage_proto_msgTypes[1]
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -112,7 +112,7 @@ func (x *UploadFileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadFileResponse.ProtoReflect.Descriptor instead.
 func (*UploadFileResponse) Descriptor() ([]byte, []int) {
-	return file_gRPC_telegram_as_storage_proto_rawDescGZIP(), []int{1}
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UploadFileResponse) GetFileId() string {
@@ -134,7 +134,7 @@ type GetFileRequest struct {
 func (x *GetFileRequest) Reset() {
 	*x = GetFileRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_gRPC_telegram_as_storage_proto_msgTypes[2]
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -147,7 +147,7 @@ func (x *GetFileRequest) String() string {
 func (*GetFileRequest) ProtoMessage() {}
 
 func (x *GetFileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gRPC_telegram_as_storage_proto_msgTypes[2]
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -160,7 +160,7 @@ func (x *GetFileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFileRequest.ProtoReflect.Descriptor instead.
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return file_gRPC_telegram_as_storage_proto_rawDescGZIP(), []int{2}
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetFileRequest) GetFilename() string {
@@ -171,6 +171,53 @@ func (x *GetFileRequest) GetFilename() string {
 }
 
 func (x *GetFileRequest) GetFileId() string {
+	if x != nil {
+		return x.FileId
+	}
+	return ""
+}
+
+type DeleteFileRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	FileId string `protobuf:"bytes,1,opt,name=fileId,proto3" json:"fileId,omitempty"`
+}
+
+func (x *DeleteFileRequest) Reset() {
+	*x = DeleteFileRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteFileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFileRequest) ProtoMessage() {}
+
+func (x *DeleteFileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFileRequest.ProtoReflect.Descriptor instead.
+func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteFileRequest) GetFileId() string {
 	if x != nil {
 		return x.FileId
 	}
@@ -188,7 +235,7 @@ type GetFileResponse struct {
 func (x *GetFileResponse) Reset() {
 	*x = GetFileResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_gRPC_telegram_as_storage_proto_msgTypes[3]
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -201,7 +248,7 @@ func (x *GetFileResponse) String() string {
 func (*GetFileResponse) ProtoMessage() {}
 
 func (x *GetFileResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gRPC_telegram_as_storage_proto_msgTypes[3]
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,7 +261,7 @@ func (x *GetFileResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFileResponse.ProtoReflect.Descriptor instead.
 func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return file_gRPC_telegram_as_storage_proto_rawDescGZIP(), []int{3}
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetFileResponse) GetFile() string {
@@ -224,10 +271,57 @@ func (x *GetFileResponse) GetFile() string {
 	return ""
 }
 
-var File_gRPC_telegram_as_storage_proto protoreflect.FileDescriptor
+type DeleteFileResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
 
-var file_gRPC_telegram_as_storage_proto_rawDesc = []byte{
-	0x0a, 0x1e, 0x67, 0x52, 0x50, 0x43, 0x2f, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x5f,
+	Ok bool `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
+}
+
+func (x *DeleteFileResponse) Reset() {
+	*x = DeleteFileResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_gRpc_telegram_as_storage_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteFileResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFileResponse) ProtoMessage() {}
+
+func (x *DeleteFileResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_gRpc_telegram_as_storage_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFileResponse.ProtoReflect.Descriptor instead.
+func (*DeleteFileResponse) Descriptor() ([]byte, []int) {
+	return file_gRpc_telegram_as_storage_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DeleteFileResponse) GetOk() bool {
+	if x != nil {
+		return x.Ok
+	}
+	return false
+}
+
+var File_gRpc_telegram_as_storage_proto protoreflect.FileDescriptor
+
+var file_gRpc_telegram_as_storage_proto_rawDesc = []byte{
+	0x0a, 0x1e, 0x67, 0x52, 0x70, 0x63, 0x2f, 0x74, 0x65, 0x6c, 0x65, 0x67, 0x72, 0x61, 0x6d, 0x5f,
 	0x61, 0x73, 0x5f, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x12, 0x07, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x22, 0x4b, 0x0a, 0x11, 0x55, 0x70, 0x6c,
 	0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a,
@@ -241,61 +335,74 @@ var file_gRPC_telegram_as_storage_proto_rawDesc = []byte{
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61,
 	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61,
 	0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x25, 0x0a, 0x0f, 0x47, 0x65,
-	0x74, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a,
-	0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x66, 0x69, 0x6c,
-	0x65, 0x32, 0x8e, 0x01, 0x0a, 0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12, 0x45, 0x0a,
-	0x0a, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x73, 0x74,
-	0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x12,
-	0x17, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x42, 0x15, 0x5a, 0x13, 0x6d, 0x79, 0x75, 0x74, 0x69, 0x6c, 0x69, 0x74, 0x79, 0x78,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x28, 0x09, 0x52, 0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x2b, 0x0a, 0x11, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x16, 0x0a, 0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x64, 0x22, 0x25, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x46, 0x69,
+	0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x69,
+	0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x22, 0x24,
+	0x0a, 0x12, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x6f, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x02, 0x6f, 0x6b, 0x32, 0xd5, 0x01, 0x0a, 0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x12, 0x45, 0x0a, 0x0a, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x1a,
+	0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46,
+	0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1b, 0x2e, 0x73, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x46, 0x69, 0x6c, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3c, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x46, 0x69,
+	0x6c, 0x65, 0x12, 0x17, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74,
+	0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x73, 0x74,
+	0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x45, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x46,
+	0x69, 0x6c, 0x65, 0x12, 0x1a, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x44, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1b, 0x2e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x15, 0x5a, 0x13,
+	0x6d, 0x79, 0x75, 0x74, 0x69, 0x6c, 0x69, 0x74, 0x79, 0x78, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67,
+	0x72, 0x70, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_gRPC_telegram_as_storage_proto_rawDescOnce sync.Once
-	file_gRPC_telegram_as_storage_proto_rawDescData = file_gRPC_telegram_as_storage_proto_rawDesc
+	file_gRpc_telegram_as_storage_proto_rawDescOnce sync.Once
+	file_gRpc_telegram_as_storage_proto_rawDescData = file_gRpc_telegram_as_storage_proto_rawDesc
 )
 
-func file_gRPC_telegram_as_storage_proto_rawDescGZIP() []byte {
-	file_gRPC_telegram_as_storage_proto_rawDescOnce.Do(func() {
-		file_gRPC_telegram_as_storage_proto_rawDescData = protoimpl.X.CompressGZIP(file_gRPC_telegram_as_storage_proto_rawDescData)
+func file_gRpc_telegram_as_storage_proto_rawDescGZIP() []byte {
+	file_gRpc_telegram_as_storage_proto_rawDescOnce.Do(func() {
+		file_gRpc_telegram_as_storage_proto_rawDescData = protoimpl.X.CompressGZIP(file_gRpc_telegram_as_storage_proto_rawDescData)
 	})
-	return file_gRPC_telegram_as_storage_proto_rawDescData
+	return file_gRpc_telegram_as_storage_proto_rawDescData
 }
 
-var file_gRPC_telegram_as_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_gRPC_telegram_as_storage_proto_goTypes = []any{
+var file_gRpc_telegram_as_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_gRpc_telegram_as_storage_proto_goTypes = []any{
 	(*UploadFileRequest)(nil),  // 0: storage.UploadFileRequest
 	(*UploadFileResponse)(nil), // 1: storage.UploadFileResponse
 	(*GetFileRequest)(nil),     // 2: storage.GetFileRequest
-	(*GetFileResponse)(nil),    // 3: storage.GetFileResponse
+	(*DeleteFileRequest)(nil),  // 3: storage.DeleteFileRequest
+	(*GetFileResponse)(nil),    // 4: storage.GetFileResponse
+	(*DeleteFileResponse)(nil), // 5: storage.DeleteFileResponse
 }
-var file_gRPC_telegram_as_storage_proto_depIdxs = []int32{
+var file_gRpc_telegram_as_storage_proto_depIdxs = []int32{
 	0, // 0: storage.Storage.UploadFile:input_type -> storage.UploadFileRequest
 	2, // 1: storage.Storage.GetFile:input_type -> storage.GetFileRequest
-	1, // 2: storage.Storage.UploadFile:output_type -> storage.UploadFileResponse
-	3, // 3: storage.Storage.GetFile:output_type -> storage.GetFileResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	3, // 2: storage.Storage.DeleteFile:input_type -> storage.DeleteFileRequest
+	1, // 3: storage.Storage.UploadFile:output_type -> storage.UploadFileResponse
+	4, // 4: storage.Storage.GetFile:output_type -> storage.GetFileResponse
+	5, // 5: storage.Storage.DeleteFile:output_type -> storage.DeleteFileResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_gRPC_telegram_as_storage_proto_init() }
-func file_gRPC_telegram_as_storage_proto_init() {
-	if File_gRPC_telegram_as_storage_proto != nil {
+func init() { file_gRpc_telegram_as_storage_proto_init() }
+func file_gRpc_telegram_as_storage_proto_init() {
+	if File_gRpc_telegram_as_storage_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_gRPC_telegram_as_storage_proto_msgTypes[0].Exporter = func(v any, i int) any {
+		file_gRpc_telegram_as_storage_proto_msgTypes[0].Exporter = func(v any, i int) any {
 			switch v := v.(*UploadFileRequest); i {
 			case 0:
 				return &v.state
@@ -307,7 +414,7 @@ func file_gRPC_telegram_as_storage_proto_init() {
 				return nil
 			}
 		}
-		file_gRPC_telegram_as_storage_proto_msgTypes[1].Exporter = func(v any, i int) any {
+		file_gRpc_telegram_as_storage_proto_msgTypes[1].Exporter = func(v any, i int) any {
 			switch v := v.(*UploadFileResponse); i {
 			case 0:
 				return &v.state
@@ -319,7 +426,7 @@ func file_gRPC_telegram_as_storage_proto_init() {
 				return nil
 			}
 		}
-		file_gRPC_telegram_as_storage_proto_msgTypes[2].Exporter = func(v any, i int) any {
+		file_gRpc_telegram_as_storage_proto_msgTypes[2].Exporter = func(v any, i int) any {
 			switch v := v.(*GetFileRequest); i {
 			case 0:
 				return &v.state
@@ -331,8 +438,32 @@ func file_gRPC_telegram_as_storage_proto_init() {
 				return nil
 			}
 		}
-		file_gRPC_telegram_as_storage_proto_msgTypes[3].Exporter = func(v any, i int) any {
+		file_gRpc_telegram_as_storage_proto_msgTypes[3].Exporter = func(v any, i int) any {
+			switch v := v.(*DeleteFileRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_gRpc_telegram_as_storage_proto_msgTypes[4].Exporter = func(v any, i int) any {
 			switch v := v.(*GetFileResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_gRpc_telegram_as_storage_proto_msgTypes[5].Exporter = func(v any, i int) any {
+			switch v := v.(*DeleteFileResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -348,18 +479,18 @@ func file_gRPC_telegram_as_storage_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_gRPC_telegram_as_storage_proto_rawDesc,
+			RawDescriptor: file_gRpc_telegram_as_storage_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_gRPC_telegram_as_storage_proto_goTypes,
-		DependencyIndexes: file_gRPC_telegram_as_storage_proto_depIdxs,
-		MessageInfos:      file_gRPC_telegram_as_storage_proto_msgTypes,
+		GoTypes:           file_gRpc_telegram_as_storage_proto_goTypes,
+		DependencyIndexes: file_gRpc_telegram_as_storage_proto_depIdxs,
+		MessageInfos:      file_gRpc_telegram_as_storage_proto_msgTypes,
 	}.Build()
-	File_gRPC_telegram_as_storage_proto = out.File
-	file_gRPC_telegram_as_storage_proto_rawDesc = nil
-	file_gRPC_telegram_as_storage_proto_goTypes = nil
-	file_gRPC_telegram_as_storage_proto_depIdxs = nil
+	File_gRpc_telegram_as_storage_proto = out.File
+	file_gRpc_telegram_as_storage_proto_rawDesc = nil
+	file_gRpc_telegram_as_storage_proto_goTypes = nil
+	file_gRpc_telegram_as_storage_proto_depIdxs = nil
 }
