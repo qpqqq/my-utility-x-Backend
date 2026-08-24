@@ -24,13 +24,13 @@ MyUtilityX is a versatile backend service built with Go, offering various utilit
 
 ## 📁 Project Structure
 
-├── graph/ # GraphQL schema and resolvers\n
-├── models/ # Data models\n
-├── routes/ # HTTP routing (Gin)\n
-├── utils/ # Utility functions\n
-├── repository/ # Data access layer\n
-├── mailS/ # Email service implementation\n
-├── gRPC/ # gRPC client implementation\n
+├── graph/ # GraphQL schema and resolvers
+├── models/ # Data models
+├── routes/ # HTTP routing (Gin)
+├── utils/ # Utility functions
+├── repository/ # Data access layer
+├── mailS/ # Email service implementation
+├── gRPC/ # gRPC client implementation
 
 ## 🚀 Getting Started
 
