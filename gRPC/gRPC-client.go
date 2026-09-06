@@ -17,7 +17,7 @@ var (
 func Connect() StorageClient {
 	once.Do(func() {
 		var err error
-		maxMsgSize := 1024 * 1024 * 2000 // 50 MB
+		maxMsgSize := 1024 * 1024 * 50 // 50 MB
 
 		conn, err = grpc.NewClient("localhost:50051",
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
